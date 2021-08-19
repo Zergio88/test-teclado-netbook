@@ -1,5 +1,8 @@
 package controlador;
 
+import javax.swing.JLabel;
+
+import modelo.Mecanografia;
 import modelo.Tecla;
 import vista.VistaTeclado;
 
@@ -29,4 +32,13 @@ public class Controlador {
 	public void soltarTecla(Tecla tecla) {	
 		tecla.soltar();
 	}
+	
+	public void MecanografiaActivo(Mecanografia m) {
+		m.Empezar();
+	}
+
+	public void MecanografiaUpdate(Mecanografia m, char c) {
+		m.UpdateText(c);		
+	}
+	
 }

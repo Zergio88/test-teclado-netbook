@@ -12,7 +12,7 @@ public class Ppal {
 		VistaTeclado mi_vista = new VistaTeclado();
 		Controlador.getInstancia().registrarVista(mi_vista);
 		mi_vista.asociar_controlador(Controlador.getInstancia());
-		mi_vista.setResizable(false);
+		mi_vista.setResizable(true);
 		mi_vista.setVisible(true);
 
 	}

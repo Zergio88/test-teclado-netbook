@@ -1,15 +1,22 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import javax.swing.border.MatteBorder;
 
 import controlador.Controlador;
+import modelo.BordeRedondo;
+import modelo.Mecanografia;
 import modelo.Tecla;
 
 public class VistaTeclado extends JFrame implements KeyListener {
@@ -32,6 +39,8 @@ public class VistaTeclado extends JFrame implements KeyListener {
 	ctrl1,fn,win,alt,spc,altgr,menu,ctrl2,izquierda,abajo,derecha;
 	int presionado = 0;
 	Color FondoForm = new Color(223, 245, 254);
+	JButton jb_mecano;
+	Mecanografia jl_mecano;
 				
 	public VistaTeclado() {		
 		initialize();				
@@ -44,6 +53,8 @@ public class VistaTeclado extends JFrame implements KeyListener {
 	public void keyPressed(KeyEvent e) {		
 		int cod=e.getKeyCode();
 		char caracter=e.getKeyChar();
+		
+		controlador_vista.MecanografiaUpdate(jl_mecano, caracter);
 		
 		// LE DIGO AL CONTROLADOR QUE CAMBIE EL ESTADO A ESA TECLA
 		
@@ -596,11 +607,37 @@ public class VistaTeclado extends JFrame implements KeyListener {
 		}		
 	}
 	
+	ActionListener oyentedeAccion = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			/* el boton no debe ser focuseable sino no funciona el keylistener */
+			jb_mecano.setFocusable(false);
+			/** mostramos el label donde se muestran las frases **/
+			jl_mecano.setVisible(true);
+			controlador_vista.MecanografiaActivo(jl_mecano);
+		
+			/*
+			 * controlador, vamos a empezar a jugar
+			 * seteame una frase
+			 * empeza a borrar mientras voy tipeando
+			 * 
+			 * 
+			 * 
+			 * 
+			 * */
+			
+		}
+		
+	};
+	
 	public void initialize() {
 		this.setTitle("test-teclado");
 		this.setSize(860, 420);
 		this.setLocation(100, 100);
 		this.setResizable(true);
+		this.setFocusable(true);
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		/* para cambiar el color de la ventana en gral*/
@@ -717,6 +754,19 @@ public class VistaTeclado extends JFrame implements KeyListener {
 		izquierda = new Tecla("izq",690, 330, 50, 50,KeyEvent.VK_LEFT);
 		abajo = new Tecla("aba",745, 330, 50, 50,KeyEvent.VK_DOWN);
 		derecha = new Tecla("der",800, 330, 50, 50,KeyEvent.VK_RIGHT);
+		
+		/* label mecanografia*/
+		jl_mecano = new Mecanografia();
+		jl_mecano.setBorder(new MatteBorder(2,0,2,0, new Color(5, 101, 158)));
+		jl_mecano.setFont(new Font("Verdana", 3, 24));
+		jl_mecano.setBounds(120, 55, 600, 40);
+		jl_mecano.setVisible(false);
+		
+		/* boton mecanografia */
+		jb_mecano = new JButton("");
+		jb_mecano.setBounds(800, 270, 50, 50);
+		jb_mecano.setBorder(new BordeRedondo(30));
+		jb_mecano.addActionListener(oyentedeAccion);
 				
 		 getContentPane().add(esc);
 		 getContentPane().add(f1);
@@ -801,7 +851,9 @@ public class VistaTeclado extends JFrame implements KeyListener {
 		 getContentPane().add(ctrl2);
 		 getContentPane().add(izquierda);
 		 getContentPane().add(abajo);
-		 getContentPane().add(derecha); 			 
+		 getContentPane().add(derecha);
+		 getContentPane().add(jl_mecano);
+		 getContentPane().add(jb_mecano);
 		
 	}
 }
